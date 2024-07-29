@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Socket.IO Room Example</title>
+  </head>
+  <body>
+    <input type="text" id="messageInput" placeholder="Message" />
+    <button onclick="sendMessage()">Send Message</button>
+    <ul id="messages"></ul>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      const { io } = require("socket.io-client");
+      const id = "9d617083";
+      const username = "user10";
+      const online = true;
+      const socket = io("ws://localhost:3000", {
+        query: { id, username, online },
+      });
+
+      function sendMessage() {
+        //const room = document.getElementById("roomInput").value;
+        const message = document.getElementById("messageInput").value;
+        socket.emit("message", message);
+      }
+
+      socket.on("message", (message) => {
+        const li = document.createElement("li");
+        li.textContent = message;
+        document.getElementById("messages").appendChild(li);
+      });
+    </script>
+  </body>
+</html>
